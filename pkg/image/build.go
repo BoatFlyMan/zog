@@ -51,7 +51,7 @@ func Build(cfg *config.Config, dir, imageName string, progressOutput string) err
 	
 	console.Info("WRITTEN TO FILE")
 	
-	return "SUCCESSFULLY WROTE TO FILE ; NOT AN ERROR"
+	return nil
 
 	if err := docker.Build(dir, dockerfileContents, imageName, progressOutput); err != nil {
 		return fmt.Errorf("Failed to build Docker image: %w", err)
