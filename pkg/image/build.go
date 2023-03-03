@@ -41,7 +41,7 @@ func Build(cfg *config.Config, dir, imageName string, progressOutput string) err
 	file, err := os.Create("Dockerfile")
 	if err != nil {
 		console.Info("AHHH FAILURE")
-		return
+		return fmt.Errorf("Failed to create Dockerfile: %w", err)
 	}
 	defer file.Close()
 	
