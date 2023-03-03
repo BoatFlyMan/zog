@@ -10,6 +10,8 @@ import (
 	"github.com/replicate/cog/pkg/dockerfile"
 	"github.com/replicate/cog/pkg/global"
 	"github.com/replicate/cog/pkg/util/console"
+	
+	"os"
 )
 
 // Build a Cog model from a config
@@ -29,9 +31,25 @@ func Build(cfg *config.Config, dir, imageName string, progressOutput string) err
 	}()
 
 	dockerfileContents, err := generator.Generate()
+	
 	if err != nil {
 		return fmt.Errorf("Failed to generate Dockerfile: %w", err)
 	}
+	
+	console.Info("DOCKERFILECONTENTS")
+	
+	file, err := os.Create("Dockerfile")
+	if err != nil {
+		console.Info("AHHH FAILURE")
+		return
+	}
+	defer file.Close()
+	
+	console.Info("WRITING TO FILE")
+
+	file.WriteString(dockerfileContents)
+	
+	console.Info("WRITTEN TO FILE")
 
 	if err := docker.Build(dir, dockerfileContents, imageName, progressOutput); err != nil {
 		return fmt.Errorf("Failed to build Docker image: %w", err)
